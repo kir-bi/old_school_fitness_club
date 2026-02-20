@@ -318,7 +318,7 @@ h4 {
     position: relative;
     z-index: 2;
     text-align: center;
-    padding: 120px 24px 80px;
+    padding: 120px 24px 120px;
 }
 
 .hero-badge {
@@ -471,16 +471,16 @@ h4 {
 /* --- Hero Scroll Indicator --- */
 .hero-scroll {
     position: absolute;
-    bottom: 32px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     color: var(--text-muted);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
 }

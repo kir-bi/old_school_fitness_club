@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initParticles();
     initSmoothScroll();
+    initAnalyticsEvents();
 });
 
 /* --- Scroll Reveal Animations --- */
@@ -118,4 +119,81 @@ function initSmoothScroll() {
             }
         });
     });
+}
+
+/* --- Google Analytics Events --- */
+function initAnalyticsEvents() {
+    if (typeof gtag !== 'function') return;
+
+    // WhatsApp CTA button clicks
+    document.querySelectorAll('a[href*="chat.whatsapp.com"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            gtag('event', 'whatsapp_click', {
+                event_category: 'CTA',
+                event_label: btn.closest('.join') ? 'Join Section' : 'Other',
+            });
+        });
+    });
+
+    // Google Maps location link
+    document.querySelectorAll('a[href*="maps.app.goo.gl"]').forEach((link) => {
+        link.addEventListener('click', () => {
+            gtag('event', 'map_click', {
+                event_category: 'CTA',
+                event_label: 'Location Link',
+            });
+        });
+    });
+
+    // Hero "Вступить в клуб" button
+    const heroCta = document.querySelector('.hero .btn-primary');
+    if (heroCta) {
+        heroCta.addEventListener('click', () => {
+            gtag('event', 'hero_cta_click', {
+                event_category: 'CTA',
+                event_label: 'Hero Join Button',
+            });
+        });
+    }
+
+    // Hero "Узнать больше" button
+    const heroLearnMore = document.querySelector('.hero .btn-outline');
+    if (heroLearnMore) {
+        heroLearnMore.addEventListener('click', () => {
+            gtag('event', 'learn_more_click', {
+                event_category: 'Navigation',
+                event_label: 'Hero Learn More',
+            });
+        });
+    }
+
+    // Nav "Вступить" button
+    const navCta = document.querySelector('.nav-cta');
+    if (navCta) {
+        navCta.addEventListener('click', () => {
+            gtag('event', 'nav_cta_click', {
+                event_category: 'CTA',
+                event_label: 'Nav Join Button',
+            });
+        });
+    }
+
+    // Track section views
+    const sections = document.querySelectorAll('.section, .hero');
+    const sectionObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    gtag('event', 'section_view', {
+                        event_category: 'Engagement',
+                        event_label: entry.target.id || 'unknown',
+                    });
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.3 }
+    );
+
+    sections.forEach((section) => sectionObserver.observe(section));
 }
